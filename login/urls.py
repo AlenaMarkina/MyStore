@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .views import Login
+from .views import LoginView
 
+
+app_name = 'login'
 
 urlpatterns = [
-    path('', Login.as_view())
+    path('', LoginView.as_view(), name='login')
 ]
