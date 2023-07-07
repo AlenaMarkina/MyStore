@@ -17,9 +17,9 @@ class Product(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
-
+    # def __str__(self):
+    #     return self.name
+#
 
 class Discount(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -29,3 +29,10 @@ class Discount(models.Model):
 
     def __str__(self):
         return f'{self.product.name}_{self.value}%_{self.date_end}'
+
+
+class Wishlist(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.product}'

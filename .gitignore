@@ -1,4 +1,8 @@
 .idea
 venv
+<<<<<<< HEAD
 *.db
 *.sqlite3
+=======
+ERP_diagram.png
+>>>>>>> main

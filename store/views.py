@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.db.models import OuterRef, Subquery, F, ExpressionWrapper, DecimalField, Case, When
 from django.utils import timezone
-from .models import Product
+from .models import Product, Wishlist
 
 
 class ProductSingleView(View):
@@ -53,3 +53,18 @@ class ShopView(View):
         ).values('id', 'name', 'image', 'price_before', 'price_after',
                  'discount_value')
         return render(request, 'store/shop.html', {"data": products})
+
+
+class WishlistView(View):
+    def get(self, request):
+        data = Wishlist.objects.select_related('product')  # data=<QuerySet [<Wishlist: Tomatoes>]>
+
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        print(f'data = {data},\ndata[0] = {data[0]},\ndata[0].product = {data[0].product}\ndata[0].product.price = {data[0].product.price},\n{data[0].product.__dict__}')
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
+
+        for product in data:
+            print(product)
+            # print(product[0].product.description, 11111111111111)
+
+        return render(request, 'store/wishlist.html', context={'data': data})
