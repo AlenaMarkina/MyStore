@@ -27,7 +27,7 @@
 						      </tr>
 						    </thead>
 						    <tbody>
-						      {% for product in data %}<!-- Начало цикла-->
+						      {% for wish_product in data %}<!-- Начало цикла-->
                                 <tr class="text-center">
                                     <!-- Опционально! Реализовать, что при нажатии на крестик удаляется товар из Wishlist,
                                     соответственно пишите ссылку на обработчик. Обработчик принимает параметр id товара
@@ -35,14 +35,17 @@
                                     на обработчик wishlist, который показывает страницу wishlist-->
                                     <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
                                     <!-- При нажатии на картинку (подставить из БД) должен быть переход на соответствующий товар ссылку прописать в href-->
-                                    <td class="image-prod"><a href="#"><div class="img" style="background-image:url({% static 'store/images/product-1.jpg' %});"></div></a></td>
-
+                                    <td class="image-prod">
+                                        <a href="{% url 'store:product' wish_product.product.id %}">
+                                            <div class="img"><img src="{{ wish_product.product.image.url }}" class="img-fluid"></div>
+                                        </a>
+                                    </td>
                                     <td class="product-name">
-                                        <h3>{{ product }}</h3><!-- Название из БД-->
-                                        <p>{{ price }}</p><!-- Описание из БД-->
+                                        <h3>{{ wish_product.product.name }}</h3><!-- Название из БД-->
+                                        <p>{{ wish_product.product.description }}</p><!-- Описание из БД-->
                                     </td>
 
-                                    <td class="price">$4.90</td><!-- Стоимость из БД-->
+                                    <td class="price">{{ wish_product.product.price }}</td><!-- Стоимость из БД-->
 
                                   </tr>
                               {% endfor %}<!-- Конец цикла-->
