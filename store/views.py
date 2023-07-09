@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django import template
 from django.views import View
 from django.db.models import OuterRef, Subquery, F, ExpressionWrapper, DecimalField, Case, When
 from django.utils import timezone
@@ -116,7 +117,30 @@ class WishlistView(View):
             # print(self.get_queryset())
             return render(request, "store/wishlist.html", context={'data': list_of_data})
 
-        return redirect('login:login')  # from django.shortcuts import redirect
+        return redirect('login:login')
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+
+
+def delete_from_wishlist(request, id):
+    product = get_object_or_404(Product, id=id)
+    wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
+    wishlist_item.delete()
+
+    return redirect('store:wishlist')
+
+
+def add_to_wishlist(request, id):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, id=id)
+        wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
+
+        if wishlist_item.exists():
+            return redirect('store:shop')
+        else:
+            wishlist_item = Wishlist(user=request.user, product=product)
+            wishlist_item.save()
+            return redirect('store:shop')
+
+    return redirect('login:login')
